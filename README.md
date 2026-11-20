@@ -1,3 +1,43 @@
+# 历史地图课堂
+
+[在线使用](https://romydan.github.io/history-map-classroom/)
+
+基于 [江山时序 Jiangshan Atlas](https://github.com/DeanChensj/jiangshan-map) 改编的人教统编初中历史教学网站。先选教材、再选课程，在真实地形地图上理解事件、路线与时序。教师授课与学生自学同等重要。
+
+默认示例为九年级上册第14课《探寻新航路》。六册共133课、357个事件或主题节点；活动课按问题和任务呈现。七上、七下、八上、八下、九上、九下目录均可切换。
+
+- **课堂授课**：本课时序、背景/经过/影响、地图缩放、全屏大字视图与课程分享。
+- **自主学习**：知识梳理、逐步提示、参考思路、本机文字草稿与已学标记。
+- **地图**：Natural Earth真实地形、河流和海岸线；课程相关中国史政权轮廓来自原项目GPL图层；航线为教学概略示意。
+- **部署**：GitHub Pages仅发布由显式文件清单构建的课堂目录，排除教材PDF、扫描页和CHGIS郡县层。
+
+## 本地预览
+
+```sh
+python3 -m http.server 63418 --bind 127.0.0.1 --directory classroom
+```
+
+打开 `http://127.0.0.1:63418/`。无需前端依赖和运行时服务端。
+
+```sh
+node classroom/scripts/validate.mjs
+node classroom/scripts/build.mjs
+```
+
+Pages工作流位于 `.github/workflows/classroom-pages.yml`，从 `classroom` 分支发布 `classroom-dist/`。
+
+## 来源与核对范围
+
+教学概述为原创改写，本站不转载整本教材。九上第14课另已核对75—79页正文和地图；八下目前仅核对出版社配套指南与24课目录，其他册次也各有核对范围。逐册状态可在网站“教材与地图来源”及 [课程数据](classroom/data/curriculum.json) 中查看。
+
+代码与原创课程数据按GPL-3.0发布。详见 [署名与许可](classroom/ATTRIBUTION.md)、[课堂版使用说明](classroom/README.md) 和 [原项目说明](README-upstream.md)。
+
+本仓库保留上游源码与历史，课堂版运行文件集中在 `classroom/`；发布工作流不会上传整个上游运行目录。
+
+
+<details>
+<summary>上游项目完整说明（保留供源码维护与回归验证参考）</summary>
+
 # Chronicles of the Realm · 江山时序
 
 <p align="left">
@@ -302,3 +342,5 @@ Code and the data created by this project are released under **GPL-3.0**. One la
 **Report a data error**: found a wrong year, place or description? [Open a data correction issue](https://github.com/DeanChensj/jiangshan-map/issues/new?template=data-error.yml) and cite a source if you can.
 
 Copyright © 2026 DeanChensj. Licensed under GPL-3.0 (see [LICENSE](LICENSE)), except as noted above.
+
+</details>

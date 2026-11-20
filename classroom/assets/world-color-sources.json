@@ -1,0 +1,124 @@
+{
+  "title": "Natural Earth II with Shaded Relief and Water, 1:50m",
+  "license": "Public domain",
+  "license_url": "https://www.naturalearthdata.com/about/terms-of-use/",
+  "attribution": "Made with Natural Earth.",
+  "source_page": "https://www.naturalearthdata.com/downloads/50m-raster-data/50m-natural-earth-2/",
+  "projection_reference": "https://www.naturalearthdata.com/features/",
+  "download_url": "https://naciscdn.org/naturalearth/50m/raster/NE2_50M_SR_W.zip",
+  "source_page_legacy_link": "https://www.naturalearthdata.com/http//www.naturalearthdata.com/download/50m/raster/NE2_50M_SR_W.zip",
+  "downloaded": "2026-11-20",
+  "website_version": "3.2.0",
+  "original": {
+    "file": "work/research/world-color-original/NE2_50M_SR_W.tif",
+    "dimensions": [
+      10800,
+      5400
+    ],
+    "mode": "RGB",
+    "format": "TIFF",
+    "sha256": "02ae944d9ee8a64ccacbd4f535220aac10b5c95e874118b6db8d6f07cea48e71",
+    "geotiff_crs": "EPSG:4326",
+    "readme": "The data is in the Geographic projection and uses the WGS84 datum.",
+    "extent": [
+      -180,
+      -90,
+      180,
+      90
+    ],
+    "tfw": "work/research/world-color-original/NE2_50M_SR_W.tfw",
+    "archive_sha256": "7e0e07089b699a3cccad98dd1b2446390d8e3f8c5006359d477a329cebcafaa9"
+  },
+  "equirectangular": {
+    "file": "world-color.jpg",
+    "dimensions": [
+      5400,
+      2700
+    ],
+    "bytes": 2154836,
+    "sha256": "8a1197961d7c548a3ec4a17821d07097b6d99cf65746c655131094e0ecd896a7",
+    "crs": "EPSG:4326 / WGS84 longitude,latitude degrees",
+    "display_projection": "Plate Carrée / equirectangular",
+    "extent": [
+      -180,
+      -90,
+      180,
+      90
+    ],
+    "orientation": "north up",
+    "conversion": "Pillow resize original RGB GeoTIFF to 5400×2700 with Lanczos resampling; JPEG quality 85, progressive and optimized, no geographic or color changes."
+  },
+  "mercator": {
+    "file": "world-color-mercator.jpg",
+    "dimensions": [
+      2560,
+      2560
+    ],
+    "bytes": 975274,
+    "sha256": "89806353928109965f838bb49baff2e2ad6d0f972e5329906523678abd68c4c5",
+    "crs": "EPSG:3857 / WGS 84 Pseudo-Mercator",
+    "extent_meters": [
+      -20037508.342789244,
+      -20037508.342789244,
+      20037508.342789244,
+      20037508.342789244
+    ],
+    "extent_degrees": [
+      -180,
+      -85.0511287798066,
+      180,
+      85.0511287798066
+    ],
+    "orientation": "north up",
+    "earth_radius_meters": 6378137,
+    "inverse_mapping": "lat = degrees(atan(sinh(pi*(1-2*y/2560)))); sourceY = (90-lat)/180*5400; sourceX = x/2560*10800; destination pixel-edge coordinates",
+    "resampling": "Pillow one-output-row piecewise mesh, inverse spherical Mercator latitude; bicubic sampling directly from source TIFF; JPEG quality 85 progressive optimize",
+    "max_vertical_mesh_midpoint_error_source_pixels": 0.0006471473718647758
+  },
+  "content_integrity": "Original real geographic data only. No AI image generation, recoloring, invented terrain, political borders, or application code changes.",
+  "verification": {
+    "jpeg_decode": true,
+    "image_modes": "RGB",
+    "sizes_within_4MiB_each": true,
+    "georeference_from_tfw_and_geotiff": true,
+    "projection_roundtrip_test": true,
+    "visual_check": "Mercator preview inspected: correct global coastline, green/yellow land, detailed mountain shading and blue ocean bathymetry; no black/gap bands."
+  },
+  "rivers": {
+    "file": "world-rivers.json",
+    "origin": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_rivers_lake_centerlines.geojson",
+    "license": "Natural Earth public domain",
+    "features": 13,
+    "sha256": "55aa4497405afc07cdc931b7fbe062c4d6693ba2a550c0d24899953f5d507c8d"
+  },
+  "shippingRaster": {
+    "file": "world-color-mercator.jpg",
+    "bytes": 975801,
+    "sha256AfterProvenanceEmbedding": "36c3ff57659c46331f9406527dae3c1d7c3461749d3584a722f249b1ad1e16a9",
+    "note": "JPEG comment embeds sourced origin; pixel data unchanged."
+  },
+  "land": {
+    "file": "world-land.json",
+    "format": "GeoJSON FeatureCollection",
+    "bytes": 138160,
+    "sha256": "9e0729ee253ca7d7a5c4ae9395fb1902264c5377c52e224d13dd85010e2835d9",
+    "source_repository": "https://github.com/nvkelso/natural-earth-vector",
+    "download_url": "https://raw.githubusercontent.com/nvkelso/natural-earth-vector/master/geojson/ne_110m_land.geojson",
+    "scale": "1:110,000,000",
+    "feature_count": 127,
+    "feature_class": "Land",
+    "geometry_types": [
+      "Polygon"
+    ],
+    "coordinate_count": 5143,
+    "bbox": [
+      -180,
+      -90,
+      180,
+      83.64513
+    ],
+    "crs": "WGS 84 longitude,latitude in degrees / GeoJSON CRS84 axis order",
+    "modification": "None: original downloaded GeoJSON bytes preserved under local world-land.json filename.",
+    "political_borders": false
+  }
+}

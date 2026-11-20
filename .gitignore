@@ -8,3 +8,6 @@ _snap_skill_tmp_*.html
 /geojson/*
 !/geojson/demo.html
 !/geojson/jiangshan-locate.js
+
+# Curated classroom Pages artifact (built from an explicit allowlist)
+/classroom-dist/
