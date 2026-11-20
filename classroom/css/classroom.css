@@ -181,14 +181,7 @@ svg {
   stroke-width:1.8;
   stroke-linejoin:round
 }
-.upstream-credit {
-  color:var(--red);
-  font-size:18px;
-  text-decoration:none;
-  padding-left:20px;
-  border-left:1px solid #8c7e6b;
-  white-space:nowrap
-}
+
 .home-nav {
   display:none;
   gap:27px;
@@ -267,10 +260,7 @@ svg {
 .home-view .home-nav {
   display:flex
 }
-.home-view .upstream-credit {
-  font-size:16px;
-  padding-left:14px
-}
+
 .home-view .mode-switch {
   margin-left:10px
 }
@@ -1532,9 +1522,7 @@ svg {
 .mode-switch button {
   flex:1
 }
-.upstream-credit {
-  margin-right:auto
-}
+
 .app-header .search-wrap {
   flex:none;
   width:300px
@@ -1646,10 +1634,7 @@ svg {
   .brand-mark {
     width:40px
   }
-  .upstream-credit {
-    font-size:15px;
-    padding-left:13px
-  }
+
   .mode-switch button {
     font-size:17px;
     padding-inline:14px
@@ -1760,9 +1745,7 @@ svg {
     gap:18px;
     font-size:18px
   }
-  .home-view .upstream-credit {
-    display:none
-  }
+
   .home-view .brand {
     font-size:29px
   }
@@ -1777,9 +1760,7 @@ svg {
 
 }
 @media(max-width:1100px) {
-  .upstream-credit {
-    display:none
-  }
+
   .outline-toggle {
     display:flex
   }
@@ -2418,9 +2399,7 @@ svg {
   body:not(.home-view) .header-actions .utility {
     flex:1
   }
-  body:not(.home-view) .upstream-credit {
-    margin-left:12px
-  }
+
 
 }
 @media(max-width:1100px) {
@@ -2441,9 +2420,7 @@ svg {
   .mode-switch {
     min-width:0
   }
-  .upstream-credit {
-    margin-left:0
-  }
+
   .goal-list {
     font-size:14px
   }
@@ -2638,7 +2615,12 @@ svg {
 .learning-place{cursor:pointer;outline:none}
 .learning-place circle{fill:#fff7e8;stroke:var(--layer-color);stroke-width:1.6}
 .learning-place:focus-visible circle,.learning-place:hover circle{stroke-width:3;fill:#f3d8b4}
-.learning-place-label{font-weight:700}
+.learning-place-label{font-weight:700;pointer-events:all}
+.place-leader{stroke:var(--layer-color,#645a4e);stroke-width:1;stroke-opacity:.9;pointer-events:none}
+.learning-place .learning-event-ring{stroke:#b5452f;stroke-width:2.2}
+.learning-place .learning-event-dot{fill:#b5452f;stroke:none}
+.learning-place[data-event-active="true"] text{fill:#b5452f}
+.learning-place:hover .place-leader,.learning-place:focus-visible .place-leader{stroke-width:2}
 .place-future circle,.place-future text{opacity:.65}
 .legend-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
 .legend-heading b{margin:0}

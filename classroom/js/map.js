@@ -1,3 +1,4 @@
+import { layoutMapLabels, avoidCoveredAnchors } from './map-labels.js';
 import { project, geometryPath, routePath, fitBounds, fitLearningBounds, clampView, distanceScale } from './geo.js';
 import { learningMap, routeState, routePoints, lessonMapPoints, hasLearningLayers, mapContextYear } from './learning-map.js';
 const NS = 'http://www.w3.org/2000/svg';
@@ -16,17 +17,18 @@ export class AtlasMap {
     if(!compact){this.scale=document.createElement('div');this.scale.className='map-scale';this.scale.setAttribute('role','img');this.root.append(this.scale);}
     this.observer = new ResizeObserver(() => { if (this.lesson && !this.drag) this.fit(); }); this.observer.observe(container);
     this.listen();
+    document.fonts?.ready.then(()=>{if(!this.disposed&&this.view)this.applyView();});
   }
   async setLesson(lesson, book, index = 0, { preserve = false } = {}) {
     this.lesson = lesson; this.book = book; this.index = index;
-    this.root.classList.toggle('simplified-map-labels',!!learningMap(lesson).mobileHideContextLabels);
+    this.backgroundStops=[];
     try {
       const [land, borders, rivers,regions] = await loadGeo(); if (this.disposed) return;
       this.land = land; this.borders = borders;this.rivers=rivers;this.regions=regions; this.render(); if (!preserve || !this.view) this.fit(); else this.applyView();
       this.loadBorder();
     } catch (err) { this.root.querySelector('.map-error')?.remove(); const p = document.createElement('p'); p.className='map-error'; p.textContent=`${err.message}。请刷新页面重试；右侧知识内容仍可阅读。`; this.root.append(p); }
   }
-  async setEvent(index) { this.index = index; if (!this.land) return; this.render();if(learningMap(this.lesson).camera==='stage')this.fit();else this.applyView();this.loadBorder(); }
+  async setEvent(index) { this.index = index; if (!this.land) return; this.render();this.fit();this.loadBorder(); }
   render() {
     if (!this.baseReady) {
     this.svg.replaceChildren();
@@ -48,7 +50,7 @@ export class AtlasMap {
     this.context = el('g', { class:'map-context' });
     const isWorld = this.book.id.startsWith('9');
     const labels = isWorld ? [['美 洲',[-104,35]],['欧 洲',[21,51]],['非 洲',[20,8]],['亚 洲',[94,42]],['大 西 洋',[-35,0]],['印 度 洋',[76,-24]],['太 平 洋',[-130,-19]]] : [['青 藏 高 原',[84,32]],['蒙 古 高 原',[105,46]],['太 平 洋',[142,23]],['印 度 洋',[75,6]]];
-    labels.forEach(([text, point]) => this.context.append(label(text, project(point), { class: /洋/.test(text) ? 'ocean-name' : 'region-name', 'text-anchor':'middle' })));
+    labels.forEach(([text, point]) => {if(this.contextRelevant(text))this.addBackgroundLabel(text,point,/洋/.test(text)?'ocean-name':'region-name',this.context);});
     this.svg.append(this.context);
     this.baseReady=true;
     }
@@ -63,21 +65,7 @@ export class AtlasMap {
       if(!this.compact)this.routeAnnotation(event);
     }
     this.points = el('g', { class:'event-points' });
-    this.lesson.events.forEach((e, i) => {
-      if (!e.coords || (this.compact && i !== this.index)) return;
-      // Coincident events share the active map point; the timeline retains each event.
-      if (i !== this.index && event?.coords && e.coords.every((n,j) => Math.abs(n-event.coords[j]) < 1e-6)) return;
-      const [x,y] = project(e.coords), active = i === this.index;
-      const mappedPlace=this.learningStops.find(p=>Math.hypot(p.xy[0]-x,p.xy[1]-y)<.2);
-      const g = el('g', { class:`event-point ${active ? 'is-active' : ''}`, 'data-event':i, role:this.compact?'none':'button',tabindex:this.compact?-1:0,'aria-label':`${e.dateLabel} ${e.title}`, 'aria-pressed':active?'true':'false' });
-      g.append(el('circle', { cx:x,cy:y,r:active?5:3.1,class:'point-halo' })); g.append(el('circle',{cx:x,cy:y,r:active?2.8:1.5,class:'point-dot'}));
-      const title=el('title'); title.textContent=`${e.title} · ${e.place}`;g.append(title);
-      const nearRoute = !active && event?.route?.some(p=>{const a=project(p);return Math.hypot(a[0]-x,a[1]-y)<12;});
-      if (!hasLearningLayers(this.lesson) && !mappedPlace && (active || (this.lesson.events.length <= 4 && !nearRoute))) g.append(label(e.id==='9a-14-e2'?'巴哈马群岛':e.place.replace(/（.*?）/g,''), [x,y], { class:`place-name ${active?'active-place':''}`,'data-anchor-x':x,'data-anchor-y':y,'data-dx':7,'data-dy':11 }));
-      g.addEventListener('click', ev=>{ev.stopPropagation();this.onSelect?.(i);});
-      g.addEventListener('keydown', ev=>{if(['Enter',' '].includes(ev.key)){ev.preventDefault();this.onSelect?.(i);}});
-      this.points.append(g);
-    });
+    // Event anchors are merged with curricular places, never painted twice.
     this.svg.append(this.points);
     this.points.style.display=this.showPlaces?'':'none';this.context.style.display=this.layers?'':'none';
   }
@@ -88,10 +76,27 @@ export class AtlasMap {
     const positions=new Map(),event=this.lesson.events[this.index];
     const addPlace=(p,status,color,defaultPriority=2)=>{
       if(!p.name || !p.coords) return;
-      const xy=project(p.coords),key=p.coords.map(n=>n.toFixed(4)).join(','),priority=p.labelPriority ?? defaultPriority;
-      const old=positions.get(key),current=status==='current'||status==='overview'||p.eventIds?.includes(event?.id);
-      if(!old || (current&&!old.current) || (current===old.current&&priority<old.priority))positions.set(key,{...p,xy,priority,current,status,color,endpoint:p.endpoint||old?.endpoint});
-      else if(p.endpoint)old.endpoint=true;
+      const xy=project(p.coords),priority=p.labelPriority ?? defaultPriority,current=status==='current'||status==='overview'||p.eventIds?.includes(event?.id);
+      const aliases=name=>name.replace(/（.*?）/g,'').split(/[：:]/).map(n=>n.trim());
+      const names=aliases(p.name),matches=[...positions.entries()].filter(([,old])=>{
+        if(!!p.labelOnly!==!!old.labelOnly)return false;
+        const distance=Math.hypot(old.xy[0]-xy[0],old.xy[1]-xy[1]);
+        return distance<.0001 || (distance<.9&&aliases(old.name).some(n=>names.includes(n)));
+      });
+      const key=matches[0]?.[0] || `${p.labelOnly?'label:':''}${p.coords.map(n=>n.toFixed(4)).join(',')}:${p.labelOnly?p.name:''}`;
+      const candidates=[...matches.map(([,old])=>old),{...p,xy,priority,current,status,color}];
+      candidates.sort((a,b)=>Number(!!b.eventActive)-Number(!!a.eventActive)||Number(!!b.current)-Number(!!a.current)||a.priority-b.priority);
+      const chosen={...candidates[0]},fullNames=[...new Set(candidates.map(c=>c.name))];
+      // Country/capital aliases retain both roles as one caption, e.g. 美国：华盛顿.
+      const member=candidates.find(c=>c.group&&c.name.includes('：'));
+      if(member){chosen.name=member.name;chosen.group=member.group;}
+      chosen.eventIds=[...new Set(candidates.flatMap(c=>c.eventIds||[]))];
+      chosen.aliases=[...new Set(candidates.flatMap(c=>c.aliases||[c.name]))];
+      chosen.notes=[...new Set(candidates.flatMap(c=>c.notes||(c.note?[c.note]:[])))];
+      chosen.note=chosen.notes.join('；');
+      chosen.endpoint=candidates.some(c=>c.endpoint);chosen.focused=candidates.some(c=>c.focused);
+      for(const [key] of matches)positions.delete(key);
+      positions.set(key,chosen);
     };
     for(const area of plan.areas || []) {
       const status=routeState(area,this.lesson,this.index,this.overview),color=area.color || '#96712e';
@@ -113,18 +118,26 @@ export class AtlasMap {
       const marker=el('marker',{id:`route-direction-${route.id}`,viewBox:'0 0 12 12',refX:10,refY:6,markerWidth:9,markerHeight:9,orient:'auto',markerUnits:'userSpaceOnUse'});
       marker.append(el('path',{d:'M1 1L11 6L1 11L4 6Z',fill:status==='future'?'#8c8374':color}));g.append(marker);
       const path=el('path',attrs),title=el('title');title.textContent=`${route.label}：${route.note || plan.scopeNote || ''}`;path.append(title);g.append(path);routes.append(g);
-      route.waypoints.forEach((p,i)=>addPlace({...p,endpoint:i===0||i===route.waypoints.length-1},status,color,i===0||i===route.waypoints.length-1?1:2));
+      route.waypoints.forEach((p,i)=>addPlace({...p,eventIds:route.eventIds,focused:route.id===this.focusedRoute,endpoint:i===0||i===route.waypoints.length-1},status,color,i===0||i===route.waypoints.length-1?1:2));
     }
     for(const p of plan.places || []) addPlace(p,routeState(p,this.lesson,this.index,this.overview),p.color || '#5d5548',2);
     for(const p of plan.labels || []) addPlace({...p,labelOnly:true},routeState(p,this.lesson,this.index,this.overview),p.color || '#5d5548',1);
+    this.lesson.events.forEach((e,i)=>{
+      if(!e.coords || (!this.overview&&i!==this.index))return;
+      const xy=project(e.coords),existing=[...positions.values()].filter(p=>!p.labelOnly&&(!p.eventIds?.length||p.eventIds.includes(e.id))).sort((a,b)=>Math.hypot(a.xy[0]-xy[0],a.xy[1]-xy[1])-Math.hypot(b.xy[0]-xy[0],b.xy[1]-xy[1])).find(p=>Math.hypot(p.xy[0]-xy[0],p.xy[1]-xy[1])<.9);
+      if(existing){existing.eventActive=existing.eventActive||i===this.index;if(i===this.index||existing.eventIndex===undefined)existing.eventIndex=i;existing.priority=0;existing.current=existing.current||i===this.index;existing.status=this.overview?'overview':'current';existing.eventIds=[...new Set([...(existing.eventIds||[]),e.id])];}
+      else addPlace({name:e.place.replace(/（.*?）/g,'').replace(/^今/,'').replace(/一带$/,''),coords:e.coords,eventIds:[e.id],eventIndex:i,eventActive:i===this.index,labelPriority:0},this.overview?'overview':'current','#b5452f',0);
+    });
     const order={current:0,overview:0,earlier:1,context:2,future:3};
-    this.learningStops=[...positions.values()].sort((a,b)=>(order[a.status]-order[b.status])||a.priority-b.priority||Number(b.endpoint)-Number(a.endpoint));
+    this.learningStops=[...positions.values()].sort((a,b)=>Number(!!b.eventActive)-Number(!!a.eventActive)||Number(!!b.focused)-Number(!!a.focused)||(order[a.status]-order[b.status])||a.priority-b.priority||Number(b.endpoint)-Number(a.endpoint));
     for(const p of this.learningStops) {
-      const [x,y]=p.xy,g=el('g',{class:`learning-place ${p.current?'place-current':''} place-${p.status}`,'data-learning-place':p.name,style:`--layer-color:${p.status==='future'?'#8c8374':p.color}`,role:this.compact?'none':'button',tabindex:this.compact?-1:0,'aria-label':`地图地点：${p.name}${p.dateLabel?'，'+p.dateLabel:''}`});
+      const [x,y]=p.xy,g=el('g',{class:`learning-place ${p.current?'place-current':''} place-${p.status}`,'data-learning-place':p.name,'data-event-active':!!p.eventActive,style:`--layer-color:${p.status==='future'?'#8c8374':p.color}`,role:this.compact?'none':'button',tabindex:this.compact?-1:0,'aria-label':`地图地点：${p.name}${p.dateLabel?'，'+p.dateLabel:''}`});
       const t=el('title');t.textContent=[p.name,p.dateLabel,p.note].filter(Boolean).join(' · ');g.append(t);
-      if(!p.labelOnly)g.append(el('circle',{cx:x,cy:y,r:3.2,'vector-effect':'non-scaling-stroke'}));
+      const leader=el('path',{class:'place-leader',fill:'none','vector-effect':'non-scaling-stroke','aria-hidden':'true'});g.append(leader);p.leader=leader;
+      if(!p.labelOnly)g.append(el('circle',{cx:x,cy:y,r:3.2,class:p.eventActive?'learning-event-ring':'','vector-effect':'non-scaling-stroke'}));
+      if(p.eventActive)g.append(el('circle',{cx:x,cy:y,r:1.6,class:'learning-event-dot','vector-effect':'non-scaling-stroke'}));
       const n=label(p.name,[x,y],{class:`place-name learning-place-label ${p.current&&p.priority===1?'active-place':''}`,'data-anchor-x':x,'data-anchor-y':y,'data-dx':p.labelDx ?? 7,'data-dy':p.labelDy ?? -7});
-      const inspect=ev=>{ev.stopPropagation();if(p.eventIds?.length===1){const index=this.lesson.events.findIndex(e=>e.id===p.eventIds[0]);if(index>=0&&index!==this.index){this.onSelect?.(index);return;}}this.onInspect?.(p);};
+      const inspect=ev=>{ev.stopPropagation();if(p.eventIndex!==undefined&&p.eventIndex!==this.index){this.onSelect?.(p.eventIndex);return;}if(p.eventIds?.length===1){const index=this.lesson.events.findIndex(e=>e.id===p.eventIds[0]);if(index>=0&&index!==this.index){this.onSelect?.(index);return;}}this.onInspect?.(p);};
       g.addEventListener('click',inspect);g.addEventListener('keydown',ev=>{if(ev.key==='Enter'||ev.key===' '){ev.preventDefault();inspect(ev);}});
       g.append(n);stops.append(g);p.node=g;p.label=n;
     }
@@ -158,22 +171,28 @@ export class AtlasMap {
   }
   async loadBorder() {
     const token = this.borderToken = Symbol(), plan=learningMap(this.lesson),year=mapContextYear(this.lesson,this.index);
-    this.polities?.replaceChildren();
+    this.polities?.replaceChildren();this.backgroundStops=this.backgroundStops.filter(p=>!p.polity);
     if (!this.layers || plan.hidePolity || this.book.id.startsWith('9') || !Number.isInteger(year)) return;
     const phase=this.borders?.find(p=>year>=p.from && year<=p.to); if(!phase) return;
     try {
       const r=await fetch(`./data/borders/${phase.file}`); if(!r.ok) return; const data=await r.json(); if(this.disposed || this.borderToken!==token) return;
       data.features.forEach(f=>{
         const p=f.properties; this.polities.append(el('path',{d:geometryPath(f.geometry),fill:p.tint||'#c6952b','fill-opacity':'.14',stroke:p.tint||'#8b6e46','stroke-opacity':'.72','stroke-width':'.8','vector-effect':'non-scaling-stroke'}));
-        if(p.anchor) this.polities.append(label(p.title,project(p.anchor),{class:'polity-name','text-anchor':'middle'}));
+        if(p.anchor&&this.contextRelevant(p.title))this.addBackgroundLabel(p.title.replace(/（.*?）/g,''),p.anchor,'polity-name',this.polities,true);
       });
+      this.applyView();
     } catch { /* Geographic reference stays available if an optional polity layer cannot load. */ }
   }
   fit() {
     if(!this.lesson) return;this.focusedRoute=null;
     const events=this.lesson.events;let points=events.flatMap(e=>[...(e.coords?[e.coords]:[]),...(e.route||[])]);if(!points.length&&!this.book.id.startsWith('9'))points=[[75,20],[130,52]];
     const aspect=this.root.clientWidth/Math.max(1,this.root.clientHeight),plan=learningMap(this.lesson);
-    this.homeView=hasLearningLayers(this.lesson)?fitLearningBounds(lessonMapPoints(this.lesson),aspect,{world:plan.world,extent:this.overview?plan.overviewExtent:plan.stageExtents?.[events[this.index]?.id] || plan.extent}):fitBounds(points,aspect,this.lesson.id==='9a-14');
+    const currentRoutes=(plan.routes||[]).filter(r=>routeState(r,this.lesson,this.index)==='current');
+    const stagePoints=[...currentRoutes.flatMap(routePoints),...(plan.places||[]).filter(p=>['current','context'].includes(routeState(p,this.lesson,this.index))).map(p=>p.coords),...(plan.areas||[]).filter(a=>['current','context'].includes(routeState(a,this.lesson,this.index))).flatMap(a=>a.ring||[]),...(events[this.index]?.coords?[events[this.index].coords]:[])];
+    const extent=this.overview?plan.overviewExtent:plan.stageExtents?.[events[this.index]?.id] || plan.extent;
+    this.homeView=hasLearningLayers(this.lesson)?fitLearningBounds(this.overview||!stagePoints.length?lessonMapPoints(this.lesson):stagePoints,aspect,{world:plan.world,extent}):fitBounds(points,aspect,this.lesson.id==='9a-14');
+    const protectedStops=this.learningStops.filter(p=>!p.labelOnly&&(p.eventActive||(p.current&&p.priority<=1))).map(p=>({xy:p.xy,weight:p.eventActive?8:1}));
+    this.homeView=avoidCoveredAnchors(this.homeView,protectedStops,this.root);
     this.view=[...this.homeView];this.applyView();
   }
   applyView() {
@@ -189,6 +208,7 @@ export class AtlasMap {
     this.svg.querySelectorAll('marker').forEach(n=>{n.setAttribute('markerWidth',10*k);n.setAttribute('markerHeight',10*k);});
     this.points?.querySelectorAll('circle').forEach(c=>{const active=c.parentElement.classList.contains('is-active');const dot=c.classList.contains('point-dot');c.setAttribute('r',(dot?(active?4:1.7):(active?8:4.5))*k);});
     this.svg.classList.toggle('zoomed-map',this.view[2]<100);
+    if(this.scale){const s=distanceScale(this.view,this.root.clientWidth,this.root.clientHeight,small?85:130),km=s.km.toLocaleString('zh-CN',{maximumFractionDigits:s.km<1?2:0}),latitude=`${Math.abs(s.latitude).toFixed(0)}°${s.latitude>=0?'N':'S'}`;this.scale.style.width=`${s.pixels+16}px`;this.scale.setAttribute('aria-label',`距离参照：${latitude}附近约${km}公里，随地图缩放变化`);this.scale.title='按视图中心纬度估算；墨卡托投影在不同纬度的距离比例不同。';this.scale.innerHTML=`<div class="scale-values"><span>0</span><span>${km}公里</span></div><div class="scale-bar"><i></i><i></i><i></i><i></i></div><small>${latitude}附近</small>`;}
     this.declutterLearningLabels(k);
     if(this.annotation){
       const a=this.annotation,ctm=this.svg.getScreenCTM(),shortWidth=[...a.short].reduce((n,c)=>n+(/[\u2e80-\uffff]/.test(c)?14:7),20);
@@ -203,31 +223,22 @@ export class AtlasMap {
       const edge=a.anchor[1]>y+h/2?y+h:y;
       a.tail.setAttribute('d',`M${a.anchor.join(',')}L${cx},${edge}`);
     }
-    if(this.scale){const s=distanceScale(this.view,this.root.clientWidth,this.root.clientHeight,small?85:130),km=s.km.toLocaleString('zh-CN',{maximumFractionDigits:s.km<1?2:0}),latitude=`${Math.abs(s.latitude).toFixed(0)}°${s.latitude>=0?'N':'S'}`;this.scale.style.width=`${s.pixels+16}px`;this.scale.setAttribute('aria-label',`距离参照：${latitude}附近约${km}公里，随地图缩放变化`);this.scale.title='按视图中心纬度估算；墨卡托投影在不同纬度的距离比例不同。';this.scale.innerHTML=`<div class="scale-values"><span>0</span><span>${km}公里</span></div><div class="scale-bar"><i></i><i></i><i></i><i></i></div><small>${latitude}附近</small>`;}
+
+  }
+  contextRelevant(name){
+    const plan=learningMap(this.lesson),key=name.replace(/（.*?）/g,'').replace(/\s/g,'');
+    const event=this.lesson.events[this.index],text=[this.lesson.title,plan.summary,plan.spatialSkill,plan.scopeNote,event?.title,...(event?.keywords||[]),JSON.stringify(plan.question||{})].join('');
+    return key.length>0&&text.includes(key);
+  }
+  addBackgroundLabel(name,coords,className,parent,polity=false){
+    const xy=project(coords),node=el('g',{'aria-hidden':'true'}),n=label(name,xy,{class:className});node.append(n);parent.append(node);
+    this.backgroundStops.push({name,xy,node,label:n,priority:4,labelOnly:true,background:true,polity,status:'context'});
   }
   declutterLearningLabels(k) {
-    if(!this.learningStops?.length)return;
-    const ctm=this.svg.getScreenCTM();if(!ctm)return;
-    const bounds=this.root.getBoundingClientRect(),small=bounds.width<500,occupied=[...this.root.parentElement.querySelectorAll('.map-tools,.map-badge,.zoom-tools,.map-legend,.map-scale')].map(n=>n.getBoundingClientRect()).filter(r=>r.width&&r.height),counts={current:0,overview:0,earlier:0,context:0,future:0},seenLabels=new Set(),plan=learningMap(this.lesson),mobileNames=small?plan.mobileLabelNames?.[this.lesson.events[this.index]?.id]:null;let total=0;
-    const overlaps=(a,b)=>a.left<b.right+4&&a.right>b.left-4&&a.top<b.bottom+3&&a.bottom>b.top-3;
-    for(const p of this.learningStops) {
-      const circle=p.node.querySelector('circle');if(circle)circle.setAttribute('r',(p.priority===1?3.8:2.8)*k);
-      p.label.style.display='';
-      if((mobileNames&&!this.focusedRoute&&!mobileNames.includes(p.name)) || seenLabels.has(p.name)){p.label.style.display='none';continue;}
-      const detailed=!!this.focusedRoute || this.view[2]<40,limit=p.status==='future'?(small?2:4):p.status==='earlier'?(small?3:6):p.status==='context'?(small?3:5):(small?7:12);
-      if(total>=(small?13:23)||(!detailed&&counts[p.status]>=limit)||(!detailed&&p.status==='future'&&p.priority>1)||(small&&p.priority>1&&!detailed)||(p.priority>2&&!detailed)){p.label.style.display='none';continue;}
-      const font=small?14:15;p.label.style.fontSize=`${font*k}px`;
-      const width=[...p.name].reduce((n,c)=>n+(/[\u2e80-\uffff]/.test(c)?font:font*.53),0),height=font+3;
-      const sx=p.xy[0]*ctm.a+ctm.e,sy=p.xy[1]*ctm.d+ctm.f;
-      const candidates=[[p.labelDx ?? 7,p.labelDy ?? -7],[7,19],[-width-7,-7],[-width-7,19],[7,-25],[7,35],[-width/2,-12],[-width/2,25]];
-      let chosen;
-      for(const [dx,dy] of candidates){const r={left:sx+dx,right:sx+dx+width,top:sy+dy-height,bottom:sy+dy+3};if(r.left<bounds.left+5||r.right>bounds.right-5||r.top<bounds.top+5||r.bottom>bounds.bottom-5)continue;if(!occupied.some(b=>overlaps(r,b))){chosen={dx,dy,r};break;}}
-      if(!chosen){p.label.style.display='none';continue;}
-      p.label.setAttribute('x',p.xy[0]+chosen.dx*k);p.label.setAttribute('y',p.xy[1]+chosen.dy*k);occupied.push(chosen.r);seenLabels.add(p.name);counts[p.status]++;total++;
-    }
+    layoutMapLabels({svg:this.svg,root:this.root,stops:this.learningStops,background:this.layers?this.backgroundStops:[],k,compact:this.compact,focusedRoute:this.focusedRoute});
   }
   toggleOverview(){this.overview=!this.overview;this.render();this.fit();return this.overview;}
-  focusRoute(id){const route=learningMap(this.lesson).routes?.find(r=>r.id===id);if(!route)return;this.focusedRoute=id;const points=routePoints(route);this.view=fitLearningBounds(points,this.root.clientWidth/Math.max(1,this.root.clientHeight),{extent:points});this.applyView();}
+  focusRoute(id){const route=learningMap(this.lesson).routes?.find(r=>r.id===id);if(!route)return;this.focusedRoute=id;this.render();const points=routePoints(route);this.view=avoidCoveredAnchors(fitLearningBounds(points,this.root.clientWidth/Math.max(1,this.root.clientHeight),{extent:points}),points.map(project),this.root);this.applyView();}
   zoom(factor) { if(!this.view) return; const [x,y,w,h]=this.view; this.view=clampView([x+w*(1-factor)/2,y+h*(1-factor)/2,w*factor,h*factor]);this.applyView(); }
   toggleReference(){this.layers=!this.layers;this.context.style.display=this.layers?'':'none';this.loadBorder();return this.layers;}
   togglePlaces(){this.showPlaces=!this.showPlaces;this.points.style.display=this.showPlaces?'':'none';this.svg.querySelectorAll('.route-labels,.learning-stops').forEach(n=>n.style.display=this.showPlaces?'':'none');return this.showPlaces;}

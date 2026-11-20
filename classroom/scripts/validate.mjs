@@ -8,6 +8,10 @@ const root = resolve(dirname(fileURLToPath(import.meta.url)), '..');
 const json = async path => JSON.parse(await readFile(resolve(root,path),'utf8'));
 const books = await json('data/curriculum.json');
 const mapData=await json('data/map-learning.json'),mapPlans=new Map(mapData.lessonMaps.map(m=>[m.lessonId,m])),mapAudit=new Map(mapData.lessons.map(m=>[m.lessonId,m]));
+// These institutions belong to later stages, not the 641 Tang–Tibet journey.
+const tangLesson=books[1].units.flatMap(u=>u.lessons).find(l=>l.id==='7b-5'),tangPlaces=mapPlans.get('7b-5').places;
+assert.ok(tangPlaces.every(p=>routeState(p,tangLesson,0)==='future'),'入藏阶段不得提前标注安西、北庭等其他阶段地点');
+assert.equal(routeState(tangPlaces.find(p=>p.name==='北庭都护府'),tangLesson,2),'current');
 assert.equal(mapPlans.size,133);assert.equal(mapAudit.size,133);
 assert.deepEqual(books.map(b=>b.id),['7a','7b','8a','8b','9a','9b']);
 const expected=[21,22,22,24,22,22], ids=new Set();let events=0, lessons=0;

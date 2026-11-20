@@ -10,15 +10,14 @@ function legendSymbol(type){
 }
 function mapLegend(){
   const {lesson}=current(),e=lesson.events[state.event];if(!e)return '';
-  const plan=learningMap(lesson),groups=mapRouteGroups(lesson),overview=!!map?.overview;
+  const plan=learningMap(lesson),overview=!!map?.overview,groups=mapRouteGroups({...lesson,mapLearning:{...plan,routes:(plan.routes||[]).filter(r=>overview||routeState(r,lesson,state.event)==='current'||routeState(r,lesson,state.event)==='context')}});
   const rows=groups.map(g=>`<div class="legend-row"><svg class="legend-symbol learning-key" viewBox="0 0 34 24" aria-hidden="true" style="color:${esc(g.color)}"><path d="M2 12H30"/>${g.directional?'<path d="m23 7 7 5-7 5"/>':''}</svg><span>${esc(g.label)}</span></div>`);
-  if(!groups.length){const pointGroups=new Map();for(const p of plan.places || [])if(p.group&&!pointGroups.has(p.group))pointGroups.set(p.group,p.color || '#5d5548');for(const [name,color]of pointGroups)rows.push(`<div class="legend-row"><svg class="legend-symbol learning-key" viewBox="0 0 34 24" aria-hidden="true" style="color:${esc(color)}"><circle cx="16" cy="12" r="5"/></svg><span>${esc(name)}</span></div>`);}
+  if(!groups.length){const pointGroups=new Map();for(const p of plan.places || [])if(p.group&&(overview||['current','context'].includes(routeState(p,lesson,state.event)))&&!pointGroups.has(p.group))pointGroups.set(p.group,p.color || '#5d5548');for(const [name,color]of pointGroups)rows.push(`<div class="legend-row"><svg class="legend-symbol learning-key" viewBox="0 0 34 24" aria-hidden="true" style="color:${esc(color)}"><circle cx="16" cy="12" r="5"/></svg><span>${esc(name)}</span></div>`);}
   if(!overview&&plan.routes?.some(r=>routeState(r,lesson,state.event)==='future'))rows.push('<div class="legend-row"><svg class="legend-symbol future-key" viewBox="0 0 34 24" aria-hidden="true"><path d="M2 12H30" stroke-dasharray="3 4"/></svg><span>后续阶段（参照）</span></div>');
   if(plan.areas?.length)rows.push(`<div class="legend-row"><svg class="legend-symbol area-key" viewBox="0 0 34 24" aria-hidden="true"><rect x="4" y="5" width="25" height="14"/></svg><span>${plan.areas.some(a=>a.featureIds)?'今国土轮廓定位历史事件':'相关地区（范围示意）'}</span></div>`);
   if(e.coords)rows.push(`<div class="legend-row">${legendSymbol('current')}<span>当前事件地点</span></div>`);
   if(plan.routes?.length||plan.places?.length)rows.push('<div class="legend-row"><svg class="legend-symbol learning-key" viewBox="0 0 34 24" aria-hidden="true" style="color:#645a4e"><circle cx="16" cy="12" r="5"/></svg><span>关键地点（依图层设色）</span></div>');
-  if(lesson.events.some(other=>other!==e&&other.coords))rows.push(`<div class="legend-row">${legendSymbol('other')}<span>同课其他事件</span></div>`);
-  return `<div class="legend-heading"><b>图例</b>${groups.length?`<button type="button" data-action="map-overview" aria-pressed="${overview}" aria-label="${overview?'返回当前时序阶段':'显示本课完整路线总览'}">${overview?'按时序':'全课总览'}</button>`:''}</div>${rows.join('')}`;
+  return `<div class="legend-heading"><b>图例</b>${plan.routes?.length?`<button type="button" data-action="map-overview" aria-pressed="${overview}" aria-label="${overview?'返回当前时序阶段':'显示本课完整路线总览'}">${overview?'按时序':'全课总览'}</button>`:''}</div>${rows.join('')}`;
 }
 function updateLegend(){const n=$('#map-legend');if(n){n.innerHTML=mapLegend();n.hidden=!current().lesson.events.length;}}
 const CN = ['一','二','三','四','五','六','七','八','九'];
@@ -75,7 +74,7 @@ function renderLesson() {
   renderPanel();renderTimeline();updateBadge();updateLegend();
 }
 function updateBadge(){const {lesson}=current(),e=lesson.events[state.event],plan=learningMap(lesson);$('#map-badge').textContent=e?`${e.id.startsWith('9a-14')?(state.event===2?'1498年':e.dateLabel):e.dateLabel} · ${e.id.startsWith('9a-14')?shortVoyages[state.event]:(plan.eventLabels?.[e.id]||e.title)}`:lesson.title;const year=mapContextYear(lesson,state.event),note=$('#map-truth-note');if(note&&Number.isInteger(year)&&(plan.contextYear!==undefined||plan.contextYears)){note.textContent=`疆域背景参照${year<0?'公元前'+Math.abs(year):year}年 · 线与区域为教学示意，地形为现代地理参照`;}}
-function selectEvent(index){const {lesson}=current();if(index<0||index>=lesson.events.length)return;state.event=index;state.tab='events';writeUrl(true);map?.setEvent(index);renderPanel();renderTimeline();updateBadge();updateLegend();}
+function selectEvent(index){const {lesson}=current();if(index<0||index>=lesson.events.length)return;state.event=index;state.tab='events';writeUrl(true);map?.setEvent(index);renderPanel();renderTimeline();updateBadge();updateLegend();map?.fit();}
 function sourceButton(){const {lesson}=current();return `<button class="source-link" data-action="sources">${icon('book')}教材第${lesson.number}课${lesson.page?` · ${lesson.page}${lesson.id==='9a-14'?'—79':''}页`:''} · 查看来源 ${icon('right')}</button>`;}
 function explanation(head,body,open=false){return `<details class="explanation" ${open?'open':''}><summary>${esc(head)}</summary><p>${esc(body)}</p></details>`;}
 function mapReadingTask(){
@@ -112,7 +111,7 @@ function renderHome(){
     <nav class="book-list" aria-label="选择教材">${books.map((b,i)=>`<button class="book-choice" style="--book-tint:${tints[i]}" data-book="${b.id}" aria-pressed="${b.id===book.id}"><strong>${esc(b.title)}</strong><span>${esc(bookDescriptions[b.id])}</span></button>`).join('')}<p class="book-helper">选定一册，查看对应单元与课程</p></nav>
     <section class="course-catalog" aria-labelledby="catalog-title"><div class="catalog-heading"><h2 id="catalog-title">${esc(book.title)} · 课程目录</h2><span>${book.id.startsWith('9')?'世界历史':'中国历史'}</span></div><div class="catalog-units">${book.units.map((u,i)=>`<details class="unit-group" ${u.id===unit.id?'open':''}><summary>第${CN[i]}单元　${esc(u.title)}</summary>${u.lessons.map(l=>`<button class="catalog-lesson ${l.id===lesson.id?'is-selected':''}" data-preview-lesson="${l.id}" ${l.id===lesson.id?'aria-current="true"':''}><span class="lesson-kind">${l.kind==='activity'?'活动':l.kind==='theme'?'专题':'地图'}</span><span class="lesson-label">${esc(title(l))}${progress[l.id]?.completed?' · 已学':''}</span>${icon('right')}</button>${l.id===lesson.id?`<p class="lesson-subtitle">${esc(l.id==='9a-14'?'航海背景 · 主要航线 · 世界联系':l.knowledge.slice(0,3).map(k=>k.title).join(' · '))}</p>`:''}`).join('')}</details>`).join('')}</div></section>
     <section class="lesson-preview" aria-labelledby="preview-title"><div class="preview-heading"><h2 id="preview-title" tabindex="-1">${esc(lesson.title)}</h2><p>${esc(lesson.id==='9a-14'?'循着四次航海活动，理解世界联系的扩大与殖民扩张。':lesson.overview)}</p></div><div class="preview-map"><div id="preview-map" class="map-canvas"></div><div class="map-badge">${esc(lesson.id==='9a-14'?'15—16世纪 · 新航路开辟示意':lesson.kind==='activity'?'按任务串联历史知识':'本课相关地点 · 地理参照')}</div></div><p class="preview-years">${lesson.events.length?lesson.events.slice(0,5).map((e,i)=>`${esc(e.id.startsWith('9a-14')?(i===2?'1498年':e.dateLabel):e.dateLabel)} ${esc(e.id.startsWith('9a-14')?shortVoyages[i]:e.keywords[0]||e.title)}`).join(' / '):'本课为活动课，以问题、证据和表达任务组织学习。'}</p><div class="preview-actions"><button class="primary-button" data-start="teacher">开始授课</button><button class="secondary-button" data-start="student">开始学习</button></div><button class="preview-details" data-action="lesson-details">查看本课知识点与事件 ${icon('right')}</button></section>
-    </div><footer class="home-footer"><span>基于江山时序改编 · 人教版初中历史课程辅助学习</span><button data-action="sources">教材与地图来源</button></footer></section>`;
+    </div><footer class="home-footer"><span>人教版初中历史课程辅助学习</span><button data-action="sources">教材与地图来源</button></footer></section>`;
   map=new AtlasMap($('#preview-map'),{compact:true});map.setLesson(lesson,book,lesson.id==='9a-14'?1:0);
 }
 function renderProgress(){
@@ -171,7 +170,7 @@ document.addEventListener('click',e=>{
   else if(action==='zoom-out')map?.zoom(1.38);
   else if(action==='places')b.setAttribute('aria-pressed',String(map?.togglePlaces()));
   else if(action==='reference')b.setAttribute('aria-pressed',String(map?.toggleReference()));
-  else if(action==='map-overview'){map?.toggleOverview();updateLegend();map?.applyView();}
+  else if(action==='map-overview'){map?.toggleOverview();updateLegend();map?.fit();}
   else if(['quick-hint','inquiry-hints','inquiry-answer'].includes(action)){const n=$('#'+action);n.hidden=!n.hidden;b.setAttribute('aria-expanded',String(!n.hidden));b.textContent=n.hidden?(action==='inquiry-answer'?'查看参考思路':'展开提示'):(action==='inquiry-answer'?'收起参考思路':'收起提示');}
   else if(action==='complete'){const id=state.lesson;progress[id]={...progress[id],completed:!progress[id]?.completed,updated:Date.now()};const saved=saveStorage('history-atlas-progress',progress);renderPanel();toast(saved?(progress[id].completed?'本课已标记为已学':'已取消本课学习标记'):'浏览器未允许保存，标记暂保留至本次访问结束');}
 });

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-20T11:46:56.918343+00:00",
+  "generatedAt": "2026-11-20T12:32:20.956395+00:00",
   "title": "Design System: 历史地图课堂",
   "extensions": {
     "colorMeta": {
@@ -305,7 +305,7 @@
     },
     "evidence": {
       "extractionMode": "scan",
-      "implementation": "classroom/css/classroom.css; classroom/index.html; classroom/js/app.js; classroom/js/map.js; classroom/js/geo.js; classroom/js/learning-map.js; classroom/data/map-learning.json; classroom/MAP-LEARNING.md",
+      "implementation": "classroom/css/classroom.css; classroom/index.html; classroom/js/app.js; classroom/js/map.js; classroom/js/geo.js; classroom/js/learning-map.js; classroom/data/map-learning.json; classroom/MAP-LEARNING.md; classroom/js/map-labels.js",
       "captures": [
         ".impeccable/review/hero-repro.jpg",
         ".impeccable/review/home-desktop.jpg",
@@ -333,6 +333,21 @@
         "geometryQA": "work/research/map-f6-safe-area-qa.json",
         "stateQA": "work/research/map-ui-state-qa.json",
         "limits": "Not an all-133-lesson factual clearance, textbook-body audit, precise historical trajectory certification, pixel-fidelity gate pass or public-deployment verification. The pre-existing 0.7234 pixel gate stays partial/open."
+      },
+      "labelCorrection": {
+        "review": "work/research/label-finish-review/review.md",
+        "verdict": "work/research/label-finish-review/verdict-round-1.md",
+        "disposition": "ship",
+        "scope": "F1–F3 label leader correspondence, same-location aliases and current-marker ownership only.",
+        "captures": ".impeccable/review/label-correction/",
+        "reviewedCaptureCount": 17,
+        "geometryQA": [
+          "work/research/label-desktop-all-stages.json",
+          "work/research/label-mobile-all-stages.json"
+        ],
+        "overviewQA": "work/research/label-fixed-overviews.json",
+        "interactionQA": "work/research/label-click-details-qa.json",
+        "limits": "Not full-surface clearance, a factual audit of all 133 lessons, public-deployment verification, or a pixel-fidelity pass. The inherited 0.7234/open pixel gate is unchanged and was not rescored."
       }
     },
     "mapLearning": {
@@ -352,13 +367,13 @@
       "states": {
         "current": "Emphasized, painted last.",
         "earlier": "Reduced emphasis for preceding stages.",
-        "future": "Muted dashed reference, explicitly identified in the legend.",
+        "future": "Muted dashed route reference, explicitly identified in the legend. Future places are hidden in stage view unless the user focuses that route.",
         "context": "Background layer independent of a specific stage.",
         "overview": "Full-lesson relationship, entered through the legend control."
       },
       "context": "Declared contextYear/contextYears can supply a representative background year for undated themes. Modern geography, historical polity snapshots and conceptual ranges remain distinct.",
-      "camera": "Authored lesson/stage extents; route list offers 定位此段; reset or full-lesson overview restores the wider relationship.",
-      "labels": "Historical primary names, priority and collision avoidance protect teaching nodes and overlay-safe space. Mobile can use authored stage name sets and hide background labels; full text remains in place inspection and the route/area list.",
+      "camera": "Authored lesson/stage extents; route list offers 定位此段; reset or full-lesson overview restores the wider relationship. Current-event ownership is retained at shared anchors and given priority in placement and camera protection.",
+      "labels": "Places, areas and curricular background names share measured screen-space placement. Preferred screen sizes are 17px current / 16px key / 14px secondary, with a 14px floor; background names prefer 20px desktop / 17px narrow map. Keep geographic anchors fixed; displaced captions lead only to their own anchor and avoid text, overlays, other leaders and foreign anchors. Dense low-priority places defer to zoom or focus. Short captions open full names, roles and notes by text/point click or keyboard. Exact-coordinate or nearby shared-name aliases coalesce with event ownership and deduplicated source notes retained; distinct named neighbors stay separate. Background names must occur in curricular teaching text.",
       "reading": "Read-map task and stage note lead; native details reveal routes, areas, focus actions, questions, hints, answer approach and precision. Sources show pages and actual verification status.",
       "precision": "Textbook and primary institutional evidence supports declared macro teaching claims only. No exact historical tracks/borders, all-lesson textbook-body clearance, or local-exam certainty is implied."
     }
