@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-20T10:40:41.221463+00:00",
+  "generatedAt": "2026-11-20T11:46:56.918343+00:00",
   "title": "Design System: 历史地图课堂",
   "extensions": {
     "colorMeta": {
@@ -305,7 +305,7 @@
     },
     "evidence": {
       "extractionMode": "scan",
-      "implementation": "classroom/css/classroom.css; classroom/index.html; classroom/js/app.js; classroom/js/map.js; classroom/js/geo.js",
+      "implementation": "classroom/css/classroom.css; classroom/index.html; classroom/js/app.js; classroom/js/map.js; classroom/js/geo.js; classroom/js/learning-map.js; classroom/data/map-learning.json; classroom/MAP-LEARNING.md",
       "captures": [
         ".impeccable/review/hero-repro.jpg",
         ".impeccable/review/home-desktop.jpg",
@@ -314,7 +314,53 @@
       "fontProvenance": "classroom/assets/fonts/source.json",
       "reviewStatus": "Independent review records F2–F7 and coincident-label fix R1 resolved, with no remaining actionable visual finding within that fix list. F1 measured/process gate remains partial/open; individual pixel gates remain false. This documentation does not assert a passing gate.",
       "sameViewportScoreAtExtraction": 0.7234,
-      "individualGatePassed": false
+      "individualGatePassed": false,
+      "mapCorrection": {
+        "review": "work/research/map-correction-review/review.md",
+        "verdicts": [
+          "work/research/map-correction-review/verdict-round-1.md",
+          "work/research/map-correction-review/verdict-round-2.md"
+        ],
+        "contentReview": "work/research/map-content-verdict.md",
+        "disposition": "ship",
+        "scope": "F1–F7 map-content, stage and legibility corrections only; round 2 resolved F6 using the same four captures.",
+        "captures": [
+          ".impeccable/review/map-correction/triangle-trade.jpg",
+          ".impeccable/review/map-correction/mobile-triangle-trade.jpg",
+          ".impeccable/review/map-correction/mobile-silk-mission.jpg",
+          ".impeccable/review/map-correction/mobile-silk-network.jpg"
+        ],
+        "geometryQA": "work/research/map-f6-safe-area-qa.json",
+        "stateQA": "work/research/map-ui-state-qa.json",
+        "limits": "Not an all-133-lesson factual clearance, textbook-body audit, precise historical trajectory certification, pixel-fidelity gate pass or public-deployment verification. The pre-existing 0.7234 pixel gate stays partial/open."
+      }
+    },
+    "mapLearning": {
+      "authority": "classroom/data/map-learning.json",
+      "inventory": "classroom/MAP-LEARNING.md",
+      "coverage": {
+        "lessonRoles": 133,
+        "lessonPlans": 133,
+        "typedLines": 100,
+        "areas": 55,
+        "mapQuestions": 93,
+        "curriculumNodes": 358,
+        "meaning": "Structural and interaction coverage, not full factual clearance."
+      },
+      "roleRule": "Each lesson declares mode, spatialSkill and rationale; points, thematic context and activity tasks are valid. Timeline order alone never authorizes a line.",
+      "geometry": "Routes carry kind, waypoints, eventIds and explicit direction; areas carry sourced reference/range semantics; places and groups retain historical role, dates and notes.",
+      "states": {
+        "current": "Emphasized, painted last.",
+        "earlier": "Reduced emphasis for preceding stages.",
+        "future": "Muted dashed reference, explicitly identified in the legend.",
+        "context": "Background layer independent of a specific stage.",
+        "overview": "Full-lesson relationship, entered through the legend control."
+      },
+      "context": "Declared contextYear/contextYears can supply a representative background year for undated themes. Modern geography, historical polity snapshots and conceptual ranges remain distinct.",
+      "camera": "Authored lesson/stage extents; route list offers 定位此段; reset or full-lesson overview restores the wider relationship.",
+      "labels": "Historical primary names, priority and collision avoidance protect teaching nodes and overlay-safe space. Mobile can use authored stage name sets and hide background labels; full text remains in place inspection and the route/area list.",
+      "reading": "Read-map task and stage note lead; native details reveal routes, areas, focus actions, questions, hints, answer approach and precision. Sources show pages and actual verification status.",
+      "precision": "Textbook and primary institutional evidence supports declared macro teaching claims only. No exact historical tracks/borders, all-lesson textbook-body clearance, or local-exam certainty is implied."
     }
   },
   "components": [
@@ -390,9 +436,9 @@
     {
       "name": "地图符号图例",
       "kind": "custom",
-      "description": "只展示实际地图使用的路线与地点符号；此片段不生成地理形状。",
-      "html": "<div class=\"ds-legend\"><b>图例</b><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><path d=\"M2 12H29\" stroke-dasharray=\"5 3\"/><path d=\"m23 7 7 5-7 5\"/></svg><span>本次航线</span></div><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><circle cx=\"16\" cy=\"12\" r=\"5.5\" class=\"ds-legend-paper\"/></svg><span>出发地</span></div><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><circle cx=\"16\" cy=\"12\" r=\"8\" class=\"ds-legend-paper\"/><circle cx=\"16\" cy=\"12\" r=\"4\" class=\"ds-legend-dot\"/></svg><span>当前事件地点</span></div></div>",
-      "css": ".ds-legend{width:190px;padding:8px 12px;border:1px solid #b7ab94;border-radius:4px;background:#f7efdfeb;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:14px;font-weight:700;line-height:1.4}.ds-legend b{display:block;font-size:15px;line-height:1.4;margin-bottom:4px;letter-spacing:.3em}.ds-legend-row{display:flex;align-items:center;gap:8px;min-height:20px}.ds-legend-row svg{width:30px;height:20px;flex:none;fill:none;stroke:var(--red,#b5452f);stroke-width:1.8}.ds-legend-paper{fill:#fff7e8}.ds-legend-dot{fill:var(--red,#b5452f);stroke:none}"
+      "description": "按本课图层显示行进、后续参照、范围与地点，提供全课总览；此片段不生成地理形状。",
+      "html": "<div class=\"ds-legend\"><div class=\"ds-legend-heading\"><b>图例</b><button type=\"button\" aria-pressed=\"false\" aria-label=\"显示本课完整路线总览\">全课总览</button></div><div class=\"ds-legend-row\"><svg class=\"ds-learning-key\" viewBox=\"0 0 34 24\" aria-hidden=\"true\"><path d=\"M2 12H30\"/><path d=\"m23 7 7 5-7 5\"/></svg><span>中央红军行军路线（1934—1935）</span></div><div class=\"ds-legend-row\"><svg class=\"ds-future-key\" viewBox=\"0 0 34 24\" aria-hidden=\"true\"><path d=\"M2 12H30\" stroke-dasharray=\"3 4\"/></svg><span>后续阶段（参照）</span></div><div class=\"ds-legend-row\"><svg class=\"ds-area-key\" viewBox=\"0 0 34 24\" aria-hidden=\"true\"><rect x=\"4\" y=\"5\" width=\"25\" height=\"14\"/></svg><span>相关地区（范围示意）</span></div><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><circle cx=\"16\" cy=\"12\" r=\"8\" class=\"ds-legend-paper\"/><circle cx=\"16\" cy=\"12\" r=\"4\" class=\"ds-legend-dot\"/></svg><span>当前事件地点</span></div></div>",
+      "css": ".ds-legend{width:fit-content;min-width:190px;max-width:250px;padding:8px 12px;border:1px solid #b7ab94;border-radius:4px;background:#f7efdfeb;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:14px;font-weight:700;line-height:1.4}.ds-legend-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}.ds-legend-heading b{font-size:15px;letter-spacing:.3em}.ds-legend-heading button{padding:2px 0;border:0;background:none;color:var(--red,#b5452f);font:inherit;font-size:13px;text-decoration:underline;text-underline-offset:3px;cursor:pointer}.ds-legend-heading button:hover{color:#8d311f}.ds-legend-heading button:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px}.ds-legend-heading button[aria-pressed=true]{font-weight:700}.ds-legend-row{display:flex;align-items:center;gap:8px;min-height:20px}.ds-legend-row span{font-size:13px;line-height:1.45}.ds-legend-row svg{width:30px;height:20px;flex:none;fill:none;stroke:var(--red,#b5452f);stroke-width:1.8}.ds-legend-row .ds-future-key{stroke:#8c8374}.ds-legend-row .ds-area-key{stroke:#96712e;fill:#96712e24;stroke-dasharray:3 2}.ds-legend-paper{fill:#fff7e8}.ds-legend-dot{fill:var(--red,#b5452f);stroke:none}@media(max-width:760px){.ds-legend{min-width:150px;max-width:190px;padding:6px 8px}.ds-legend-heading b{font-size:12px}.ds-legend-heading button{font-size:12px;min-height:26px}.ds-legend-row{min-height:18px;gap:5px}.ds-legend-row span{font-size:12px}.ds-legend-row svg{width:25px;height:18px}}"
     }
   ],
   "narrative": {
