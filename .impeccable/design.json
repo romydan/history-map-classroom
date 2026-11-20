@@ -1,0 +1,445 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-11-20T10:40:41.221463+00:00",
+  "title": "Design System: 历史地图课堂",
+  "extensions": {
+    "colorMeta": {
+      "paper": {
+        "role": "neutral",
+        "displayName": "暖纸",
+        "tonalRamp": [
+          "oklch(15.00% 0.02380 63.49)",
+          "oklch(26.43% 0.02380 63.49)",
+          "oklch(37.86% 0.02380 63.49)",
+          "oklch(49.29% 0.02380 63.49)",
+          "oklch(60.71% 0.02380 63.49)",
+          "oklch(72.14% 0.02380 63.49)",
+          "oklch(83.57% 0.02380 63.49)",
+          "oklch(95.00% 0.02380 63.49)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "paper-deep": {
+        "role": "neutral",
+        "displayName": "深纸",
+        "tonalRamp": [
+          "oklch(15.00% 0.02525 81.12)",
+          "oklch(26.43% 0.02525 81.12)",
+          "oklch(37.86% 0.02525 81.12)",
+          "oklch(49.29% 0.02525 81.12)",
+          "oklch(60.71% 0.02525 81.12)",
+          "oklch(72.14% 0.02525 81.12)",
+          "oklch(83.57% 0.02525 81.12)",
+          "oklch(95.00% 0.02525 81.12)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "ink": {
+        "role": "neutral",
+        "displayName": "墨色",
+        "tonalRamp": [
+          "oklch(15.00% 0.01092 60.88)",
+          "oklch(26.43% 0.01092 60.88)",
+          "oklch(37.86% 0.01092 60.88)",
+          "oklch(49.29% 0.01092 60.88)",
+          "oklch(60.71% 0.01092 60.88)",
+          "oklch(72.14% 0.01092 60.88)",
+          "oklch(83.57% 0.01092 60.88)",
+          "oklch(95.00% 0.01092 60.88)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "secondary": {
+        "role": "neutral",
+        "displayName": "淡墨",
+        "tonalRamp": [
+          "oklch(15.00% 0.02281 72.28)",
+          "oklch(26.43% 0.02281 72.28)",
+          "oklch(37.86% 0.02281 72.28)",
+          "oklch(49.29% 0.02281 72.28)",
+          "oklch(60.71% 0.02281 72.28)",
+          "oklch(72.14% 0.02281 72.28)",
+          "oklch(83.57% 0.02281 72.28)",
+          "oklch(95.00% 0.02281 72.28)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "red": {
+        "role": "primary",
+        "displayName": "朱砂",
+        "tonalRamp": [
+          "oklch(15.00% 0.15024 33.01)",
+          "oklch(26.43% 0.15024 33.01)",
+          "oklch(37.86% 0.15024 33.01)",
+          "oklch(49.29% 0.15024 33.01)",
+          "oklch(60.71% 0.15024 33.01)",
+          "oklch(72.14% 0.15024 33.01)",
+          "oklch(83.57% 0.15024 33.01)",
+          "oklch(95.00% 0.15024 33.01)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "red-wash": {
+        "role": "primary",
+        "displayName": "浅朱砂纸染",
+        "tonalRamp": [
+          "oklch(15.00% 0.03180 62.80)",
+          "oklch(26.43% 0.03180 62.80)",
+          "oklch(37.86% 0.03180 62.80)",
+          "oklch(49.29% 0.03180 62.80)",
+          "oklch(60.71% 0.03180 62.80)",
+          "oklch(72.14% 0.03180 62.80)",
+          "oklch(83.57% 0.03180 62.80)",
+          "oklch(95.00% 0.03180 62.80)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "ochre": {
+        "role": "secondary",
+        "displayName": "赭金",
+        "tonalRamp": [
+          "oklch(15.00% 0.10888 76.94)",
+          "oklch(26.43% 0.10888 76.94)",
+          "oklch(37.86% 0.10888 76.94)",
+          "oklch(49.29% 0.10888 76.94)",
+          "oklch(60.71% 0.10888 76.94)",
+          "oklch(72.14% 0.10888 76.94)",
+          "oklch(83.57% 0.10888 76.94)",
+          "oklch(95.00% 0.10888 76.94)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "rule": {
+        "role": "neutral",
+        "displayName": "纸边线",
+        "tonalRamp": [
+          "oklch(15.00% 0.03120 78.74)",
+          "oklch(26.43% 0.03120 78.74)",
+          "oklch(37.86% 0.03120 78.74)",
+          "oklch(49.29% 0.03120 78.74)",
+          "oklch(60.71% 0.03120 78.74)",
+          "oklch(72.14% 0.03120 78.74)",
+          "oklch(83.57% 0.03120 78.74)",
+          "oklch(95.00% 0.03120 78.74)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "water": {
+        "role": "secondary",
+        "displayName": "灰青水色",
+        "tonalRamp": [
+          "oklch(15.00% 0.02292 189.78)",
+          "oklch(26.43% 0.02292 189.78)",
+          "oklch(37.86% 0.02292 189.78)",
+          "oklch(49.29% 0.02292 189.78)",
+          "oklch(60.71% 0.02292 189.78)",
+          "oklch(72.14% 0.02292 189.78)",
+          "oklch(83.57% 0.02292 189.78)",
+          "oklch(95.00% 0.02292 189.78)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "action-ivory": {
+        "role": "neutral",
+        "displayName": "暖象牙白",
+        "tonalRamp": [
+          "oklch(15.00% 0.02272 84.59)",
+          "oklch(26.43% 0.02272 84.59)",
+          "oklch(37.86% 0.02272 84.59)",
+          "oklch(49.29% 0.02272 84.59)",
+          "oklch(60.71% 0.02272 84.59)",
+          "oklch(72.14% 0.02272 84.59)",
+          "oklch(83.57% 0.02272 84.59)",
+          "oklch(95.00% 0.02272 84.59)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      },
+      "red-hover": {
+        "role": "primary",
+        "displayName": "深朱砂",
+        "tonalRamp": [
+          "oklch(15.00% 0.12885 33.03)",
+          "oklch(26.43% 0.12885 33.03)",
+          "oklch(37.86% 0.12885 33.03)",
+          "oklch(49.29% 0.12885 33.03)",
+          "oklch(60.71% 0.12885 33.03)",
+          "oklch(72.14% 0.12885 33.03)",
+          "oklch(83.57% 0.12885 33.03)",
+          "oklch(95.00% 0.12885 33.03)"
+        ],
+        "rampProvenance": "Synthesized OKLCH lightness samples for inspection; not additional shipping tokens."
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "首页大标题",
+        "purpose": "首页选课标题；移动端29px。",
+        "sourceFamily": "Noto Serif SC",
+        "cssAlias": "AtlasSong"
+      },
+      "headline": {
+        "displayName": "课程预览标题",
+        "purpose": "预览中的课程名；移动端30px。",
+        "sourceFamily": "Noto Serif SC",
+        "cssAlias": "AtlasSong"
+      },
+      "title": {
+        "displayName": "事件标题",
+        "purpose": "阅读面板事件名；投屏32px。",
+        "sourceFamily": "Noto Serif SC",
+        "cssAlias": "AtlasSong"
+      },
+      "body": {
+        "displayName": "宋体正文",
+        "purpose": "界面与长文阅读；移动展开说明行高1.85。",
+        "sourceFamily": "Noto Serif SC",
+        "cssAlias": "AtlasSong"
+      },
+      "label": {
+        "displayName": "界面标签",
+        "purpose": "模式与导航；实际字号按容器响应变化。"
+      },
+      "cartographic": {
+        "displayName": "舆图区域名称",
+        "purpose": "洲、洋、地形区与政权名；不是长文或全局标题。",
+        "sourceFamily": "Ma Shan Zheng",
+        "cssAlias": "AtlasKai"
+      },
+      "utility": {
+        "displayName": "辅助无衬线",
+        "purpose": "输入、来源与保存状态。"
+      }
+    },
+    "shadows": [
+      {
+        "name": "primary-action",
+        "value": "0 2px 4px #4b251b1c",
+        "purpose": "主要操作轻影。"
+      },
+      {
+        "name": "selected-mode",
+        "value": "0 2px 4px #50341c26",
+        "purpose": "当前模式轻影。"
+      },
+      {
+        "name": "map-control",
+        "value": "0 2px 4px #4c48361a",
+        "purpose": "地图浮动控件。"
+      },
+      {
+        "name": "outline-drawer",
+        "value": "8px 0 24px #47341c26",
+        "purpose": "窄屏展开目录。"
+      },
+      {
+        "name": "toast",
+        "value": "0 6px 24px #34231933",
+        "purpose": "临时状态提示。"
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease",
+        "value": "cubic-bezier(.16,1,.3,1)",
+        "purpose": "航线短揭示的现有缓动。"
+      },
+      {
+        "name": "route-reveal",
+        "value": ".8s var(--ease) both",
+        "purpose": "航线虚线偏移由70到0，并消退初始轻亮影。"
+      },
+      {
+        "name": "map-reference",
+        "value": "opacity .25s",
+        "purpose": "地图参照透明度过渡。"
+      },
+      {
+        "name": "reduced-motion",
+        "value": "animation:none!important; transition:none!important; scroll-behavior:auto",
+        "purpose": "遵循prefers-reduced-motion:reduce。"
+      }
+    ],
+    "breakpoints": [
+      {
+        "name": "wide",
+        "value": "1600px",
+        "query": "(min-width:1600px)"
+      },
+      {
+        "name": "medium-desktop",
+        "value": "1380px",
+        "query": "(max-width:1380px)"
+      },
+      {
+        "name": "outline-drawer",
+        "value": "1100px",
+        "query": "(max-width:1100px)"
+      },
+      {
+        "name": "stacked-mobile",
+        "value": "760px",
+        "query": "(max-width:760px)"
+      }
+    ],
+    "focus": {
+      "value": "2px solid var(--red)",
+      "offset": "4px",
+      "searchOffset": "9px",
+      "purpose": "键盘焦点；搜索框按实际内部结构增加偏移。"
+    },
+    "materials": {
+      "paper": {
+        "asset": "classroom/assets/paper.png",
+        "backgroundSize": "627px",
+        "opacity": 0.2
+      },
+      "mapRelief": {
+        "asset": "classroom/assets/world-color-mercator.jpg",
+        "filter": "saturate(.55) sepia(.2) brightness(1.08)",
+        "opacity": 0.9,
+        "source": "Natural Earth II with Shaded Relief and Water, 1:50m",
+        "provenance": "classroom/assets/world-color-sources.json",
+        "projection": "spherical Mercator, aligned to WGS84 coordinate overlays",
+        "constraint": "Modern geographical reference, not historical borders. Routes remain teaching approximations."
+      }
+    },
+    "evidence": {
+      "extractionMode": "scan",
+      "implementation": "classroom/css/classroom.css; classroom/index.html; classroom/js/app.js; classroom/js/map.js; classroom/js/geo.js",
+      "captures": [
+        ".impeccable/review/hero-repro.jpg",
+        ".impeccable/review/home-desktop.jpg",
+        ".impeccable/review/mobile.jpg"
+      ],
+      "fontProvenance": "classroom/assets/fonts/source.json",
+      "reviewStatus": "Independent review records F2–F7 and coincident-label fix R1 resolved, with no remaining actionable visual finding within that fix list. F1 measured/process gate remains partial/open; individual pixel gates remain false. This documentation does not assert a passing gate.",
+      "sameViewportScoreAtExtraction": 0.7234,
+      "individualGatePassed": false
+    }
+  },
+  "components": [
+    {
+      "name": "朱砂主要按钮",
+      "kind": "button",
+      "description": "进入或推进课程的主要操作。",
+      "html": "<button class=\"ds-primary\" type=\"button\">下一步 <svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><path d=\"m9 5 7 7-7 7\"/></svg></button>",
+      "css": ".ds-primary{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:42px;padding:5px 18px;border:1px solid var(--red,#b5452f);border-radius:5px;background:var(--red,#b5452f);color:#fff7e7;font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:18px;font-weight:700;line-height:1.5;cursor:pointer;box-shadow:0 2px 4px #4b251b1c}.ds-primary svg{width:20px;height:20px;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}.ds-primary:hover:not(:disabled){background:#8d311f;color:#fff7e7}.ds-primary:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}.ds-primary:disabled{opacity:.42;cursor:default}",
+      "refersTo": "button-primary"
+    },
+    {
+      "name": "纸面次要按钮",
+      "kind": "button",
+      "description": "与主要操作并列，承载返回、提示和学生入口。",
+      "html": "<button class=\"ds-secondary\" type=\"button\">开始学习</button>",
+      "css": ".ds-secondary{display:inline-flex;align-items:center;justify-content:center;gap:10px;min-height:42px;padding:5px 18px;border:1px solid #a88b66;border-radius:5px;background:#faf4e966;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:18px;font-weight:700;line-height:1.5;cursor:pointer}.ds-secondary:hover:not(:disabled){background:#e9dcc7;color:var(--red,#b5452f)}.ds-secondary:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}.ds-secondary:disabled{opacity:.42;cursor:default}",
+      "refersTo": "button-secondary"
+    },
+    {
+      "name": "课程搜索",
+      "kind": "input",
+      "description": "搜索当前教材的课程、人物或事件。",
+      "html": "<label class=\"ds-search\"><svg viewBox=\"0 0 24 24\" aria-hidden=\"true\"><circle cx=\"10.5\" cy=\"10.5\" r=\"6.5\"/><path d=\"m16 16 5 5\"/></svg><input type=\"search\" aria-label=\"搜索本册课程、人物或事件\" placeholder=\"搜本册课程、人物或事件\"></label>",
+      "css": ".ds-search{position:relative;display:flex;align-items:center;gap:10px;border:1px solid #b6a692;border-radius:5px;padding:5px 13px;width:min(300px,100%);background:#faf5ec66;color:var(--ink,#201b17)}.ds-search svg{width:20px;height:20px;flex:none;fill:none;stroke:currentColor;stroke-width:1.6;stroke-linecap:round}.ds-search input{border:0;background:none;width:100%;min-width:0;font-family:var(--sans,'PingFang SC','Microsoft YaHei',sans-serif);font-size:15px;line-height:26px;color:inherit;caret-color:var(--red,#b5452f)}.ds-search input::placeholder{color:#71675b;opacity:1}.ds-search input:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:9px}",
+      "refersTo": "search-field"
+    },
+    {
+      "name": "使用模式开关",
+      "kind": "nav",
+      "description": "教师与学生模式并列；朱砂标明当前模式。",
+      "html": "<div class=\"ds-mode\" role=\"group\" aria-label=\"使用模式\"><button type=\"button\" aria-pressed=\"true\">课堂授课</button><button type=\"button\" aria-pressed=\"false\">自主学习</button></div>",
+      "css": ".ds-mode{display:flex;width:273px;padding:2px;border:1px solid #b9a78f;border-radius:5px;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif)}.ds-mode button{flex:1;padding:3px 20px;border:0;border-radius:3px;background:none;color:inherit;font:inherit;font-size:19px;font-weight:700;line-height:1.6;white-space:nowrap;cursor:pointer}.ds-mode button[aria-pressed=true]{background:var(--red,#b5452f);color:#fff8e9;box-shadow:0 2px 4px #50341c26}.ds-mode button:hover:not([aria-pressed=true]){color:var(--red,#b5452f)}.ds-mode button:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}"
+    },
+    {
+      "name": "事件年份纸签",
+      "kind": "chip",
+      "description": "详解标题前的短日期标签。",
+      "html": "<span class=\"ds-date\">1492年</span>",
+      "css": ".ds-date{display:inline-block;padding:0 10px;border:1px solid #cfa473;border-radius:3px;background:#f1e2c8;color:#913923;font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:15px;line-height:1.55}@media(min-width:1101px){.ds-date{color:#a23d2b}}",
+      "refersTo": "date-chip"
+    },
+    {
+      "name": "选中课程行",
+      "kind": "nav",
+      "description": "浅朱砂纸染、左侧短线和文字共同表达当前课程。",
+      "html": "<nav class=\"ds-lessons\" aria-label=\"课程目录\"><button class=\"ds-lesson\" type=\"button\" aria-current=\"page\">第14课 探寻新航路</button><button class=\"ds-lesson\" type=\"button\">第15课 早期殖民掠夺</button></nav>",
+      "css": ".ds-lessons{padding-left:10px;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif)}.ds-lesson{position:relative;display:block;width:100%;text-align:left;border:0;border-radius:3px;background:none;color:inherit;padding:10px 7px;margin:1px 0;font:inherit;font-size:16px;font-weight:700;line-height:1.6;cursor:pointer}.ds-lesson[aria-current=page]{background:var(--red-wash,#f0dccb);color:var(--red,#b5452f)}.ds-lesson[aria-current=page]::before{content:\"\";position:absolute;inset:0 auto 0 -10px;width:4px;background:var(--red,#b5452f);border-radius:3px 0 0 3px}.ds-lesson:hover{color:var(--red,#b5452f)}.ds-lesson:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}",
+      "refersTo": "lesson-selected"
+    },
+    {
+      "name": "阅读标签导航",
+      "kind": "nav",
+      "description": "知识、事件、探究维持等宽的同级入口。",
+      "html": "<div class=\"ds-tabs\" role=\"tablist\" aria-label=\"内容视图\"><button role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">知识梳理</button><button role=\"tab\" aria-selected=\"true\">事件详解</button><button role=\"tab\" aria-selected=\"false\" tabindex=\"-1\">课堂探究</button></div>",
+      "css": ".ds-tabs{display:flex;height:54px;min-width:300px;border-bottom:1px solid var(--rule,#c8bba7);background:var(--paper,#fbecdf);color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif)}.ds-tabs button{flex:1;position:relative;border:0;background:none;color:inherit;font:inherit;font-size:18px;font-weight:700;white-space:nowrap;cursor:pointer}.ds-tabs button[aria-selected=true]{color:var(--red,#b5452f)}.ds-tabs button[aria-selected=true]::after{content:\"\";position:absolute;bottom:0;height:3px;left:21%;right:21%;background:var(--red,#b5452f);border-radius:2px}.ds-tabs button:hover{color:var(--red,#b5452f)}.ds-tabs button:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}"
+    },
+    {
+      "name": "可展开的事件说明",
+      "kind": "card",
+      "description": "同一纸面上的原生展开框，逐层补充背景、经过与影响。",
+      "html": "<details class=\"ds-explanation\" open><summary>为什么向西航行？</summary><p>欧洲人希望寻找通往东方的新航路。地圆学说与航海技术的发展，为向西航行提供了认识和技术条件。</p></details>",
+      "css": ".ds-explanation{margin:7px 0;border:1px solid #c6b397;border-radius:4px;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif)}.ds-explanation summary{list-style:none;padding:5px 13px;font-size:18px;font-weight:700;line-height:1.4;display:flex;justify-content:space-between;align-items:center;gap:12px;cursor:pointer}.ds-explanation summary::-webkit-details-marker{display:none}.ds-explanation summary::after{content:\"\";width:8px;height:8px;border-right:1.5px solid currentColor;border-bottom:1.5px solid currentColor;transform:rotate(45deg);margin-right:3px;flex:none}.ds-explanation[open]{border-color:#b86f4c}.ds-explanation[open] summary{color:#94351f;border-bottom:1px solid #cdbb9b}.ds-explanation[open] summary::after{transform:rotate(225deg)}.ds-explanation p{font-size:15px;line-height:1.5;font-weight:500;letter-spacing:.6px;margin:11px 14px}.ds-explanation summary:hover{color:var(--red,#b5452f)}.ds-explanation summary:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}",
+      "refersTo": "explanation"
+    },
+    {
+      "name": "教材选择卡",
+      "kind": "card",
+      "description": "书脊色条和浅染选择态构成六册教材入口。",
+      "html": "<button class=\"ds-book\" type=\"button\" aria-pressed=\"true\"><strong>九年级上册</strong><span>世界古代史与近代史</span></button>",
+      "css": ".ds-book{display:block;position:relative;min-height:92px;width:100%;text-align:left;padding:10px 17px 10px 24px;border:1px solid #cfb99a;border-radius:3px;background:none;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);cursor:pointer}.ds-book::before{content:\"\";position:absolute;inset:0 auto 0 0;width:8px;background:var(--book-tint,#9c442d)}.ds-book strong{display:block;font-size:25px;font-weight:700;line-height:1.5}.ds-book span{display:block;margin-top:3px;font-size:15px;line-height:1.5}.ds-book[aria-pressed=true]{border-color:#b66b48;background:#edcfb954;color:var(--red,#b5452f)}.ds-book:hover{color:var(--red,#b5452f)}.ds-book:focus-visible{outline:2px solid var(--red,#b5452f);outline-offset:4px;}"
+    },
+    {
+      "name": "地图符号图例",
+      "kind": "custom",
+      "description": "只展示实际地图使用的路线与地点符号；此片段不生成地理形状。",
+      "html": "<div class=\"ds-legend\"><b>图例</b><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><path d=\"M2 12H29\" stroke-dasharray=\"5 3\"/><path d=\"m23 7 7 5-7 5\"/></svg><span>本次航线</span></div><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><circle cx=\"16\" cy=\"12\" r=\"5.5\" class=\"ds-legend-paper\"/></svg><span>出发地</span></div><div class=\"ds-legend-row\"><svg viewBox=\"0 0 34 24\" aria-hidden=\"true\"><circle cx=\"16\" cy=\"12\" r=\"8\" class=\"ds-legend-paper\"/><circle cx=\"16\" cy=\"12\" r=\"4\" class=\"ds-legend-dot\"/></svg><span>当前事件地点</span></div></div>",
+      "css": ".ds-legend{width:190px;padding:8px 12px;border:1px solid #b7ab94;border-radius:4px;background:#f7efdfeb;color:var(--ink,#201b17);font-family:var(--serif,AtlasSong,'Songti SC','Noto Serif CJK SC','Source Han Serif SC',STSong,SimSun,serif);font-size:14px;font-weight:700;line-height:1.4}.ds-legend b{display:block;font-size:15px;line-height:1.4;margin-bottom:4px;letter-spacing:.3em}.ds-legend-row{display:flex;align-items:center;gap:8px;min-height:20px}.ds-legend-row svg{width:30px;height:20px;flex:none;fill:none;stroke:var(--red,#b5452f);stroke-width:1.8}.ds-legend-paper{fill:#fff7e8}.ds-legend-dot{fill:var(--red,#b5452f);stroke:none}"
+    }
+  ],
+  "narrative": {
+    "northStar": "可读的课程舆图",
+    "overview": "继承江山时序的历史气息，以温暖纸色、宋楷文字、朱砂定位和真实地形构成可阅读、可操作的课堂地图。界面有教材般的秩序，也保留舆图的细节；内容通过主线、背景、经过、影响与探究逐层展开。\n\n教师投屏与学生自主学习同等重要。两种模式共用清楚的时间、地点和事件层级，切换时保留课程、事件和地图位置。地图承担地理表达，地图外只保留纯色和极轻纸纹；边栏、页脚与界面背景不添加装饰山脉。",
+    "keyCharacteristics": [
+      "温暖纸色与朱砂强调，墨色文字形成阅读骨架。",
+      "宋体承担界面与正文，楷意书法体只用于地图区域名称。",
+      "真实地形与可操作的地点、路线、时序共同表达历史。",
+      "细线、浅色铺底和小圆角组织密集信息。",
+      "桌面并列阅读，移动端依次呈现地图、时序与详解。"
+    ],
+    "rules": [
+      {
+        "name": "The 朱砂指向 Rule",
+        "body": "同一课的地图、课程目录与时序使用同一朱砂状态语言；品牌文字保持墨色，避免与当前事件争夺注意力。",
+        "section": "colors"
+      },
+      {
+        "name": "The 地图内外 Rule",
+        "body": "地形信息只存在于地图中。地图外使用暖纸与极轻纸纹，不添加装饰山脉。",
+        "section": "colors"
+      },
+      {
+        "name": "The 字体分工 Rule",
+        "body": "宋体负责可读内容，楷意书法体负责地图区域名称；地图标签使用浅色描边保持与地形的分离。",
+        "section": "typography"
+      },
+      {
+        "name": "The 纸面层次 Rule",
+        "body": "阅读结构优先使用细线与浅染；投影只承担控件或临时界面的层级提示。",
+        "section": "elevation"
+      }
+    ],
+    "dos": [
+      "**Do** 使用当前实现的暖纸、朱砂与墨色 tokens，并把朱砂连接到课程、地图与时序的同一当前状态。",
+      "**Do** 使用有来源、坐标对齐的真实地形与地理数据，保留地图精度、投影和教学示意说明。",
+      "**Do** 让教师授课与学生学习入口同等可见，并在模式切换中保留课程、事件与地图位置。",
+      "**Do** 通过知识梳理、事件说明与探究逐层提供深度，保持移动端的完整阅读顺序。",
+      "**Do** 保留朱砂键盘焦点、文本状态和减少动态效果支持。"
+    ],
+    "donts": [
+      "**Don't** 在地图外添加装饰山脉；界面背景只使用纯色与极轻纸纹。",
+      "**Don't** 把 AI 效果图中的海岸、地形、航线或历史边界直接作为发布地图。",
+      "**Don't** 把书法体用于长正文，或用现代地理参照暗示未经证实的历史疆界。",
+      "**Don't** 用大投影、巨大圆角或浅层卡片列表替代当前细线纸面的内容层级。",
+      "**Don't** 把本视觉文档当作像素复现或独立完成度评审通过的证据。"
+    ]
+  }
+}
