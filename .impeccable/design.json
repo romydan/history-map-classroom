@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-11-20T12:32:20.956395+00:00",
+  "generatedAt": "2026-11-20T12:47:46.156902+00:00",
   "title": "Design System: 历史地图课堂",
   "extensions": {
     "colorMeta": {
@@ -348,6 +348,14 @@
         "overviewQA": "work/research/label-fixed-overviews.json",
         "interactionQA": "work/research/label-click-details-qa.json",
         "limits": "Not full-surface clearance, a factual audit of all 133 lessons, public-deployment verification, or a pixel-fidelity pass. The inherited 0.7234/open pixel gate is unchanged and was not rescored."
+      },
+      "homeFitCorrection": {
+        "qa": "work/research/home-fit-qa.json",
+        "captures": ".impeccable/review/home-fit/",
+        "review": "work/research/home-fit-review.md",
+        "reviewStatus": "Ship for the bounded six-book homepage initial-viewport visibility correction; all seven captures valid and no material fixes within scope.",
+        "scope": "Six-volume homepage initial-viewport visibility only; no inherited pixel gate or whole-surface clearance.",
+        "disposition": "ship"
       }
     },
     "mapLearning": {
@@ -376,6 +384,12 @@
       "labels": "Places, areas and curricular background names share measured screen-space placement. Preferred screen sizes are 17px current / 16px key / 14px secondary, with a 14px floor; background names prefer 20px desktop / 17px narrow map. Keep geographic anchors fixed; displaced captions lead only to their own anchor and avoid text, overlays, other leaders and foreign anchors. Dense low-priority places defer to zoom or focus. Short captions open full names, roles and notes by text/point click or keyboard. Exact-coordinate or nearby shared-name aliases coalesce with event ownership and deduplicated source notes retained; distinct named neighbors stay separate. Background names must occur in curricular teaching text.",
       "reading": "Read-map task and stage note lead; native details reveal routes, areas, focus actions, questions, hints, answer approach and precision. Sources show pages and actual verification status.",
       "precision": "Textbook and primary institutional evidence supports declared macro teaching claims only. No exact historical tracks/borders, all-lesson textbook-body clearance, or local-exam certainty is implied."
+    },
+    "homeViewportFit": {
+      "scope": "Curriculum home only; desktop min-width 761px.",
+      "behavior": "Keep all six book buttons fully visible on opening. Book rail and independently scrolling course catalog share min(560px, 100dvh - 196px); shorter home breadcrumb/title and a smaller preview preserve room.",
+      "shortDesktop": "At viewport height <=620px, use 100dvh - 160px with compact header, breadcrumb and book typography.",
+      "mobile": "At width <=760px retain the existing three-column, two-row book choices and flow-layout catalog."
     }
   },
   "components": [
