@@ -56,6 +56,18 @@ export function fitBounds(points, aspect = 1.25, world = false) {
   let h = Math.max(95, Math.max(...ys) - Math.min(...ys) + 70);
   return fitRect([(Math.max(...xs) + Math.min(...xs) - w) / 2, (Math.max(...ys) + Math.min(...ys) - h) / 2, w, h], aspect);
 }
+export function fitLearningBounds(points, aspect = 1.25, {world=false,extent} = {}) {
+  if(world) return fitBounds(points,aspect,true);
+  const p=(extent || points).filter(p=>Array.isArray(p)&&p.every(Number.isFinite)).map(project);
+  if(!p.length) return fitBounds([],aspect,true);
+  const xs=p.map(p=>p[0]),ys=p.map(p=>p[1]);
+  if(Math.max(...xs)-Math.min(...xs)>700) return fitBounds(points,aspect,true);
+  const minX=Math.min(...xs),maxX=Math.max(...xs),minY=Math.min(...ys),maxY=Math.max(...ys);
+  const minimum=extent?3:25,padding=extent?2:10;
+  const w=Math.max(minimum,(maxX-minX)*1.25+padding),h=Math.max(minimum,(maxY-minY)*1.25+padding);
+  // Reserve room for the cartouche, named waypoints and the bottom map key.
+  return fitRect([(minX+maxX-w)/2,(minY+maxY-h)/2,w,h],aspect);
+}
 function fitRect([x, y, w, h], aspect) {
   if (w / h > aspect) { const nh = w / aspect; y -= (nh - h) / 2; h = nh; }
   else { const nw = h * aspect; x -= (nw - w) / 2; w = nw; }

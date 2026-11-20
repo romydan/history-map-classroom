@@ -46,6 +46,9 @@
     "licenseFile": "NotoSerifSC-OFL.txt",
     "originalSha256": "050080d9255a86808f2945bffac582b31ef32bc36411ce29563b4961670c66f9",
     "subsetFile": "serif.woff2",
-    "method": "fontTools Unicode subset covering curricular content and UI, variable weights retained"
+    "method": "fontTools Unicode subset covering six-volume curricular content, typed map data, map questions and UI; variable weights retained",
+    "subsetSha256": "6397d8bbb793fbde42d718fcbb3e2bb919adc93420784f3a25c08e3995075bf4",
+    "subsetBytes": 818564,
+    "updated": "2026-11-20"
   }
 }

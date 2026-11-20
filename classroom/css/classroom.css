@@ -2620,3 +2620,62 @@ svg {
  .map-scale{right:57px;bottom:13px;font-size:10px;padding:3px 5px}
  .map-scale small{font-size:9px}
 }
+
+/* Curricular geometry: movement, networks, relations, fronts and study ranges. */
+.learning-route-line{stroke:var(--layer-color);stroke-width:3;stroke-linecap:round;stroke-linejoin:round}
+.learning-route-casing{stroke:#fff7e8;stroke-width:6.2;stroke-linejoin:round;stroke-linecap:round}
+.route-current .learning-route-line{stroke-width:4.2}
+.route-current .learning-route-casing{stroke-width:7.4}
+.route-earlier .learning-route-line,.route-context .learning-route-line{stroke-width:2.6;stroke-opacity:.7}
+.route-future .learning-route-line{stroke:#8c8374;stroke-width:2;stroke-dasharray:4 5;stroke-opacity:.6}
+.route-future .learning-route-casing{stroke-opacity:.6;stroke-width:4.5}
+.kind-mission .learning-route-line,.kind-exploration .learning-route-line{stroke-dasharray:9 5}
+.kind-alliance .learning-route-line{stroke-dasharray:3 5;stroke-width:2.6}
+.kind-front .learning-route-line{stroke-width:4;stroke-dasharray:2 3}
+.learning-area path{fill:var(--layer-color);fill-opacity:.17;stroke:var(--layer-color);stroke-width:1.3;stroke-dasharray:5 4}
+.area-future path{fill-opacity:.035;stroke-opacity:.3}
+.area-earlier path,.area-context path{fill-opacity:.09;stroke-opacity:.65}
+.learning-place{cursor:pointer;outline:none}
+.learning-place circle{fill:#fff7e8;stroke:var(--layer-color);stroke-width:1.6}
+.learning-place:focus-visible circle,.learning-place:hover circle{stroke-width:3;fill:#f3d8b4}
+.learning-place-label{font-weight:700}
+.place-future circle,.place-future text{opacity:.65}
+.legend-heading{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:4px}
+.legend-heading b{margin:0}
+.legend-heading button{pointer-events:auto;color:var(--red);font-size:13px;text-decoration:underline;text-underline-offset:3px;padding:2px 0}
+.learning-key{color:var(--red);stroke:currentColor}
+.future-key{stroke:#8c8374}
+.area-key{stroke:#96712e;fill:#96712e24;stroke-dasharray:3 2}
+.map-reading-task{border-block:1px solid var(--rule);padding:12px 0;margin:14px 0 18px}
+.map-reading-task h2{font-size:19px;color:var(--red);margin:0 0 6px}
+.map-reading-task p{font-size:15px;line-height:1.75;margin:5px 0}
+.map-reading-task .map-inspection{font-size:14px;color:var(--secondary)}
+.route-reading summary{font-size:15px;padding:4px 0;text-decoration:underline;text-underline-offset:4px}
+.route-reading h3{font-size:15px;margin:14px 0 3px}
+.route-reading p{font-size:14px;overflow-wrap:anywhere}
+.route-reading .route-precision{color:var(--secondary);margin-top:12px}
+.map-legend:has(.learning-key){width:auto;min-width:190px;max-width:250px}
+.map-legend:has(.learning-key) .legend-row span{font-size:13px;line-height:1.45}
+.map-canvas .learning-stops text{stroke-width:calc(var(--map-unit,1)*2.8px)}
+@media(max-width:760px){
+ .map-stage:has(.learning-routes path){min-height:490px}
+ .map-legend:has(.learning-key){max-width:190px;min-width:150px;left:12px}
+ .map-legend:has(.learning-key) .legend-row span{font-size:12px}
+ .legend-heading button{font-size:12px;min-height:26px}
+ .map-reading-task h2{font-size:21px}
+ .map-reading-task p{font-size:16px}
+ .map-reading-task .map-inspection{font-size:14px}
+}
+.learning-place .active-place{fill:var(--layer-color)}
+.map-question{font-size:15px;line-height:1.7;margin-top:12px}
+.map-question>summary{color:var(--red);font-weight:700;padding:5px 0}
+.map-question ol{padding-left:23px}
+.map-question li{margin:7px 0}
+.map-question details{padding:8px 0}
+.map-question details>summary{font-size:14px;text-decoration:underline;text-underline-offset:3px}
+.route-focus{font-size:14px;font-weight:500;color:var(--red);text-decoration:underline;text-underline-offset:3px;margin-left:6px;padding:2px 0}
+.map-reading-task p,.map-question{font-size:16px}
+.map-stage:has(.learning-route) .polity-name{fill-opacity:.55}
+@media(max-width:760px){
+ .simplified-map-labels .polity-name,.simplified-map-labels .map-context{display:none}
+}
